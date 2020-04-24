@@ -8,17 +8,36 @@ namespace Task2_AdvancedNetTechs
 {
     public class CreateHTML
     {
-        private StringBuilder wroteText = new StringBuilder("");
-        private FileStream whereToSave;
+        private StringBuilder wroteText;
+        private ConvertSCahrs newFile;
         private StreamWriter writer;
+        private FileStream savedFileLoc;
 
-        public CreateHTML(FileStream fileToSave)
+        public CreateHTML(ConvertSCahrs modifiedFile, FileStream whereToSave)
         {
-            if(fileToSave.CanWrite)
+            newFile = modifiedFile;
+            savedFileLoc = whereToSave;
+            writer = new StreamWriter(savedFileLoc, Encoding.UTF8);
+        }
+
+        public async Task SaveFile()
+        {
+            await Task.Run(() =>
             {
-                whereToSave = fileToSave;
-                writer = new StreamWriter(whereToSave, Encoding.UTF8);
-            }
+                wroteText = newFile.ModifyText().Result;
+
+                //Console.WriteLine(wroteText);
+
+                lock(savedFileLoc)
+                {
+                    lock (writer)
+                    {
+                        writer.AutoFlush = true;
+                        Console.WriteLine(wroteText);
+                        writer.WriteLine(wroteText);
+                    }
+                }
+            });
         }
     }
 }

@@ -16,9 +16,32 @@ namespace Task2_AdvancedNetTechs
             file = inputFile;
         }
 
-        private async void AssignText()
+        private async Task<StringBuilder> AssignText()
         {
-            textToModify = await file.ReadText();
+            return await Task.Run(() =>
+            {
+                lock (file)
+                {
+                    textToModify = file.ReadText().Result;
+                    return textToModify;
+
+                    Console.WriteLine(textToModify);
+                }
+            });
+        }
+
+        public async Task<StringBuilder> ModifyText()
+        {
+            return await Task.Run(() =>
+            {
+                modifiedText = AssignText().Result;
+
+                modifiedText.Append("\nNew text is here!");
+
+                //Console.WriteLine(modifiedText);
+
+                return modifiedText;
+            });
         }
     }
 }
