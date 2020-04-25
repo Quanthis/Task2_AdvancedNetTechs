@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="ConvertSCahrs.cs" />
     <Compile Include="CreateHTML.cs" />
+    <Compile Include="HelperMethods.cs" />
     <Compile Include="ReadInputFile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

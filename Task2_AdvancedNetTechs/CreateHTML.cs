@@ -26,14 +26,11 @@ namespace Task2_AdvancedNetTechs
             {
                 wroteText = newFile.ModifyText().Result;
 
-                //Console.WriteLine(wroteText);
-
                 lock(savedFileLoc)
                 {
                     lock (writer)
                     {
                         writer.AutoFlush = true;
-                        Console.WriteLine(wroteText);
                         writer.WriteLine(wroteText);
                     }
                 }

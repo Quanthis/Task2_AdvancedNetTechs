@@ -24,8 +24,6 @@ namespace Task2_AdvancedNetTechs
                 {
                     textToModify = file.ReadText().Result;
                     return textToModify;
-
-                    Console.WriteLine(textToModify);
                 }
             });
         }
@@ -36,9 +34,9 @@ namespace Task2_AdvancedNetTechs
             {
                 modifiedText = AssignText().Result;
 
-                modifiedText.Append("\nNew text is here!");
-
-                //Console.WriteLine(modifiedText);
+                modifiedText = HelperMethods.QReplace(modifiedText).Result;
+                modifiedText = HelperMethods.EMReplace(modifiedText).Result;
+                
 
                 return modifiedText;
             });
