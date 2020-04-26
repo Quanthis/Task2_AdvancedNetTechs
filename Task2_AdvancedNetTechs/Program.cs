@@ -17,7 +17,7 @@ namespace Task2_AdvancedNetTechs
 
             WriteLine("Enter path where to save: ");
             //string savePath = ReadLine();
-            string savePath = @"C:\tmp\Sample7.txt";
+            string savePath = @"C:\tmp\Sample8.txt";
 
             var fs = new FileStream(path, FileMode.Open);
             var read = new ReadInputFile(fs);

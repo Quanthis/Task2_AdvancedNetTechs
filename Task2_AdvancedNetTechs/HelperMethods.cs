@@ -9,9 +9,34 @@ namespace Task2_AdvancedNetTechs
 {
     public static class HelperMethods
     {
-        
-        public static async Task<StringBuilder> QReplace(StringBuilder textToModify)
+        private static bool AreStarsOK(string toCheck)
         {
+            int count = toCheck.Count(f => f == '*');
+            if(count % 2 == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static bool AreStarsOK(StringBuilder toCheck)
+        {
+            int count = toCheck.ToString().Count(f => f == '*');
+            if (count % 2 == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static async Task<StringBuilder> QReplace(StringBuilder textToModify)
+        { 
             return await Task.Run(() =>
             {
                 string q1 = ">>";
@@ -48,11 +73,11 @@ namespace Task2_AdvancedNetTechs
 
                 for (int i = 0; i < toModify.Length; ++i)
                 {
-                    if (toModify[i] == '*' && toModify[i + 1] != '*') 
+                    if (toModify[i] == '*' && toModify[i + 1] != '*')
                     {
-                        for(int j = i + 2; j < toModify.Length; ++j)
+                        for (int j = i + 2; j < toModify.Length; ++j)
                         {
-                            if(toModify[j] == '*')
+                            if (toModify[j] == '*')
                             {
                                 string toReplace = toModify.Substring(i, (j - i) + 2);
                                 StringBuilder subString = new StringBuilder(toModify.Substring(i, (j - i) + 1));
@@ -64,13 +89,68 @@ namespace Task2_AdvancedNetTechs
                                 string replacing = subString.ToString();
 
                                 EMReplaceResult = textToModify.Replace(toReplace, replacing);
+                                
                                 break;
                             }
                         }
+
+                        if (!AreStarsOK(toModify))
+                        {
+                            Console.WriteLine("There was an error during converting '*'. " +
+                                "Please correct misstypes first.\nApplication shutdown in 10 seconds...");
+                            Thread.Sleep(10000);
+                            Environment.Exit(0);
+                        }
+
                     }
                 }
-
                 return EMReplaceResult;
+            });                                             
+        }
+
+        private static StringBuilder StrongResult;
+        public static async Task<StringBuilder> StrongReplace(StringBuilder textToModify)
+        {
+            return await Task.Run(() =>
+            {
+                string toModify = textToModify.ToString();
+
+                for (int i = 0; i < toModify.Length; ++i)
+                {
+                    if (toModify[i] == '*' && toModify[i + 1] == '*')
+                    {
+                        for (int j = i + 2; j < toModify.Length; ++j)
+                        {
+                            if (toModify[j] == '*' && toModify[j+1] == '*')
+                            {
+                                string toReplace = toModify.Substring(i, (j - i) + 2);
+                                StringBuilder subString = new StringBuilder(toModify.Substring(i, (j - i) + 2));
+                                Console.WriteLine("Length: " + ((j - i) + 1) + "SubString: " + subString);
+                                subString.Remove(0, 2);
+                                subString.Insert(0, "<strong>");
+
+                                subString.Remove(subString.Length - 2, 2);
+                                subString.Insert(subString.Length, "</strong>");
+                                string replacing = subString.ToString();
+
+                                StrongResult = textToModify.Replace(toReplace, replacing);
+                                Console.WriteLine(StrongResult);
+
+                                break;
+                            }
+                        }
+
+                        if (!AreStarsOK(toModify))
+                        {
+                            Console.WriteLine("There was an error during converting '*'. " +
+                                "Please correct misstypes first.\nApplication shutdown in 10 seconds...");
+                            Thread.Sleep(10000);
+                            Environment.Exit(0);
+                        }
+
+                    }
+                }
+                return StrongResult;
             });
         }
 
@@ -214,6 +294,7 @@ namespace Task2_AdvancedNetTechs
                                 isOK = false;
                             }                            
                         }
+
                         if (!isOK)
                         {
                             Console.WriteLine("There was an error during converting '#' or 'text'.  " +
@@ -221,7 +302,6 @@ namespace Task2_AdvancedNetTechs
                             Thread.Sleep(10000);
                             Environment.Exit(0);
                         }
-
                     }
                 }
                 return result;

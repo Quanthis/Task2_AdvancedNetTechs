@@ -35,6 +35,7 @@ namespace Task2_AdvancedNetTechs
                 modifiedText = AssignText().Result;
 
                 modifiedText = HelperMethods.QReplace(modifiedText).Result;
+                modifiedText = HelperMethods.StrongReplace(modifiedText).Result;
                 modifiedText = HelperMethods.EMReplace(modifiedText).Result;
                 modifiedText = HelperMethods.Replace_(modifiedText).Result;
                 modifiedText = HelperMethods._Replace(modifiedText).Result;
