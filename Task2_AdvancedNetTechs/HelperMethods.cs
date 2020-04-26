@@ -9,6 +9,7 @@ namespace Task2_AdvancedNetTechs
 {
     public static class HelperMethods
     {
+        #region CheckStars
         private static bool AreStarsOK(string toCheck)
         {
             int count = toCheck.Count(f => f == '*');
@@ -18,6 +19,10 @@ namespace Task2_AdvancedNetTechs
             }
             else
             {
+                Console.WriteLine("There was an error during converting '*' or '**'. " +
+                                "Please correct misstypes first.\nApplication shutdown in 10 seconds...");
+                Thread.Sleep(10000);
+                Environment.Exit(0);
                 return false;
             }
         }
@@ -34,6 +39,7 @@ namespace Task2_AdvancedNetTechs
                 return false;
             }
         }
+        #endregion
 
         public static async Task<StringBuilder> QReplace(StringBuilder textToModify)
         { 
@@ -93,15 +99,7 @@ namespace Task2_AdvancedNetTechs
                                 break;
                             }
                         }
-
-                        if (!AreStarsOK(toModify))
-                        {
-                            Console.WriteLine("There was an error during converting '*'. " +
-                                "Please correct misstypes first.\nApplication shutdown in 10 seconds...");
-                            Thread.Sleep(10000);
-                            Environment.Exit(0);
-                        }
-
+                        AreStarsOK(toModify);
                     }
                 }
                 return EMReplaceResult;
@@ -125,7 +123,6 @@ namespace Task2_AdvancedNetTechs
                             {
                                 string toReplace = toModify.Substring(i, (j - i) + 2);
                                 StringBuilder subString = new StringBuilder(toModify.Substring(i, (j - i) + 2));
-                                Console.WriteLine("Length: " + ((j - i) + 1) + "SubString: " + subString);
                                 subString.Remove(0, 2);
                                 subString.Insert(0, "<strong>");
 
@@ -134,20 +131,11 @@ namespace Task2_AdvancedNetTechs
                                 string replacing = subString.ToString();
 
                                 StrongResult = textToModify.Replace(toReplace, replacing);
-                                Console.WriteLine(StrongResult);
 
                                 break;
                             }
                         }
-
-                        if (!AreStarsOK(toModify))
-                        {
-                            Console.WriteLine("There was an error during converting '*'. " +
-                                "Please correct misstypes first.\nApplication shutdown in 10 seconds...");
-                            Thread.Sleep(10000);
-                            Environment.Exit(0);
-                        }
-
+                        AreStarsOK(toModify);
                     }
                 }
                 return StrongResult;
@@ -212,41 +200,46 @@ namespace Task2_AdvancedNetTechs
             });
         }
 
+        private static StringBuilder Adres_ReplaceResult;
         public static async Task<StringBuilder> Adres_Replace(StringBuilder textToModify)
         {
             return await Task.Run(() =>
             {
-                string q1 = "[";
-                string q2 = "]";
-                string q3 = "|";
+                string toModify = textToModify.ToString();
 
-                string toCheck = textToModify.ToString();
-
-                int startIndex = toCheck.IndexOf(q1);
-                int endIndex = toCheck.IndexOf(q3);
-                int textEndIndex = toCheck.IndexOf(q2);
-
-                string adres = toCheck.Substring(startIndex + 1, (endIndex - startIndex) - 1);
-                string text = toCheck.Substring(endIndex + 1, ((textEndIndex - 1) - endIndex));
-
-                string qReplace1 = "<a href =\""+ adres + "\">\n";
-                string qReplace2 = text + "</a>";
-
-                if (toCheck.Contains(q1) && toCheck.Contains(q2))
+                for(int i = 0; i < textToModify.Length; ++i)
                 {
-                    textToModify.Replace(q1, qReplace1);
-                    textToModify.Replace(q2, qReplace2);
-                }
-                else if (toCheck.Contains(q1) || toCheck.Contains(q2))
-                {
-                    Console.WriteLine("There was an error during converting 'adres' or 'text'.  " +
-                        "Please correct misstypes first.\nApplication shutdown in 10 seconds...");
-                    Thread.Sleep(10000);
-                    Environment.Exit(0);
+                    if(textToModify[i] == '[')
+                    {
+                        for (int j = i + 1; j < textToModify.Length; ++j)
+                        {
+                            if(textToModify[j] == '|')
+                            {
+                                for(int k = j + 1; k < textToModify.Length; ++k)
+                                {
+                                    if(textToModify[k] == ']')
+                                    {
+                                        StringBuilder replacer1 = new StringBuilder(toModify.Substring(i, j - i));
+                                        StringBuilder replacer1_helper = new StringBuilder(replacer1.ToString().Substring(1, j - (i + 1)));
+                                        StringBuilder replacer2 = new StringBuilder(toModify.Substring(j, (k - j) + 1));
+
+                                        replacer1.Replace("[", "<a href=\"" + replacer1_helper + "\">");
+                                        int index = replacer1.ToString().IndexOf('>');
+                                        replacer1.Remove(index + 1, replacer1.Length - (index + 1));                                        
+                                        Console.WriteLine(replacer1);
+
+                                        index = replacer2.ToString().IndexOf("|");
+                                        replacer2.Remove(index, 1);
+                                        replacer2.Replace("]", "</a>");
+                                        Console.WriteLine(replacer2);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
-
-                return textToModify;
+                return Adres_ReplaceResult;
             });
         }
 

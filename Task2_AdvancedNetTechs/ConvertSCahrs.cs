@@ -39,8 +39,8 @@ namespace Task2_AdvancedNetTechs
                 modifiedText = HelperMethods.EMReplace(modifiedText).Result;
                 modifiedText = HelperMethods.Replace_(modifiedText).Result;
                 modifiedText = HelperMethods._Replace(modifiedText).Result;
-                //modifiedText = HelperMethods.Adres_Replace(modifiedText).Result;
-                modifiedText = HelperMethods.Replace3(modifiedText).Result;
+                modifiedText = HelperMethods.Adres_Replace(modifiedText).Result;
+                //modifiedText = HelperMethods.Replace3(modifiedText).Result;
 
                 return modifiedText;
             });
