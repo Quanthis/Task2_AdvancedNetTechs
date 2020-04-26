@@ -31,16 +31,18 @@ namespace Task2_AdvancedNetTechs
         public async Task<StringBuilder> ModifyText()
         {
             return await Task.Run(() =>
-            {
+            {                
                 modifiedText = AssignText().Result;
+                modifiedText = HelperMethods.ParagraphReplace(modifiedText).Result;
                 modifiedText = HelperMethods.Adres_Replace(modifiedText).Result;
                 modifiedText = HelperMethods.QReplace(modifiedText).Result;
                 modifiedText = HelperMethods.StrongReplace(modifiedText).Result;
                 modifiedText = HelperMethods.EMReplace(modifiedText).Result;
                 modifiedText = HelperMethods.Replace_(modifiedText).Result;
                 modifiedText = HelperMethods._Replace(modifiedText).Result;
-
-                //modifiedText = HelperMethods.Replace3(modifiedText).Result;
+                modifiedText = HelperMethods.Replace3(modifiedText).Result;
+                modifiedText = HelperMethods.LineReplace(modifiedText).Result;
+                //modifiedText = HelperMethods.ParagraphReplace(modifiedText).Result;
 
                 return modifiedText;
             });
