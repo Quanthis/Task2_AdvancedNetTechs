@@ -200,12 +200,14 @@ namespace Task2_AdvancedNetTechs
             });
         }
 
-        private static StringBuilder Adres_ReplaceResult;
+        private static StringBuilder Adres_ReplaceResult = new StringBuilder("");
         public static async Task<StringBuilder> Adres_Replace(StringBuilder textToModify)
         {
             return await Task.Run(() =>
             {
                 string toModify = textToModify.ToString();
+
+                Adres_ReplaceResult = textToModify;
 
                 for(int i = 0; i < textToModify.Length; ++i)
                 {
@@ -220,8 +222,15 @@ namespace Task2_AdvancedNetTechs
                                     if(textToModify[k] == ']')
                                     {
                                         StringBuilder replacer1 = new StringBuilder(toModify.Substring(i, j - i));
+                                        string toReplacev1 = replacer1.ToString();
                                         StringBuilder replacer1_helper = new StringBuilder(replacer1.ToString().Substring(1, j - (i + 1)));
                                         StringBuilder replacer2 = new StringBuilder(toModify.Substring(j, (k - j) + 1));
+                                        Console.WriteLine("i: " + i + " j: " + j + " k: " + k + " length: " + (k - (j + 1)));
+                                        string toReplacev2 = replacer2.ToString();
+
+                                        Console.WriteLine("Replacer1: " + replacer1);
+                                        Console.WriteLine("Replacer2 : " + replacer2);
+                                        Console.WriteLine("Replacer1 helper: " + replacer1_helper);
 
                                         replacer1.Replace("[", "<a href=\"" + replacer1_helper + "\">");
                                         int index = replacer1.ToString().IndexOf('>');
@@ -229,9 +238,20 @@ namespace Task2_AdvancedNetTechs
                                         Console.WriteLine(replacer1);
 
                                         index = replacer2.ToString().IndexOf("|");
+                                        if(index == -1)
+                                        {
+                                            Console.WriteLine("During conversion of '[adres|tekst]' form, '|' was not found. " +
+                                                "Application shutdown in 10 seconds.");
+                                            Thread.Sleep(10000);
+                                            Environment.Exit(0);
+                                        }
+
                                         replacer2.Remove(index, 1);
                                         replacer2.Replace("]", "</a>");
                                         Console.WriteLine(replacer2);
+
+                                        Adres_ReplaceResult.Replace(toReplacev1, replacer1.ToString());
+                                        Adres_ReplaceResult.Replace(toReplacev2, replacer2.ToString());
                                     }
                                 }
                             }
