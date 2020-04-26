@@ -12,10 +12,12 @@ namespace Task2_AdvancedNetTechs
         static async Task Main(string[] args)
         {
             WriteLine("Enter path for file: ");
-            string path = ReadLine();
+            //string path = ReadLine();
+            string path = @"C:\tmp\Sample.txt";
 
             WriteLine("Enter path where to save: ");
-            string savePath = ReadLine();
+            //string savePath = ReadLine();
+            string savePath = @"C:\tmp\Sample7.txt";
 
             var fs = new FileStream(path, FileMode.Open);
             var read = new ReadInputFile(fs);
