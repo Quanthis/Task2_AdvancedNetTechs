@@ -33,7 +33,7 @@ namespace Task2_AdvancedNetTechs
                 try
                 {
                     var save = new CreateHTML(modify, new FileStream(savePath, FileMode.Create));
-                    save.SaveFile();
+                    await save.SaveFile();
 
                     System.Diagnostics.Process.Start(savePath);
                 }
