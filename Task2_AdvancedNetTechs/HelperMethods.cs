@@ -410,8 +410,10 @@ namespace Task2_AdvancedNetTechs
                                 subString = toCheck.Substring(index, (innerIndex - index) + 1);
                                 string stringToReplace = subString;
                                 
-                                string partResult1 = subString.Replace("#", "\n<h1 id=\"" + outerIndex + ">");
+                                string partResult1 = subString.Replace("#", "\n<h1 id=\"" + outerIndex + "\">");
                                 string partResult2 = partResult1.Replace("\n", "</h1>");
+                                partResult2 = partResult2.Remove(0, 5);
+                                partResult2 = partResult2 + "\n";
                                 
                                 textToModify.Replace(stringToReplace, partResult2);
 
@@ -453,9 +455,7 @@ namespace Task2_AdvancedNetTechs
                 string text = textToModify.ToString();
 
                 string[] lines = text.Split('\n');
-                //Console.WriteLine(ParagraphReplaceResult);
                 
-
                 for (int i = 1; i < lines.Length; ++i)
                 {
                     if (!lines[i].Contains('>') && !lines[i].Contains('<') && !lines[i].Contains('*') && !lines[i].Contains('!') &&
@@ -463,12 +463,10 @@ namespace Task2_AdvancedNetTechs
                         && !lines[i].Contains(']') && !lines[i].Contains("**") && !lines[i].Contains('|') && !lines[i].Contains('-')
                         && !lines[i].Contains('_'))
                     {
-                        Console.WriteLine("Affected line: " + lines[i]);
                         string newLine = "<p>" + lines[i] + "</p>";
                         ParagraphReplaceResult.Replace(lines[i], newLine);
                     }
                 }
-                //Console.WriteLine(ParagraphReplaceResult);
                 return ParagraphReplaceResult;
             });
         }

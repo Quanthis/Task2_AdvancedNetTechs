@@ -11,25 +11,46 @@ namespace Task2_AdvancedNetTechs
     {
         static async Task Main(string[] args)
         {
-            WriteLine("Enter path for file: ");
-            //string path = ReadLine();
-            string path = @"C:\tmp\Sample.txt";
+            WriteLine("Enter full path for input file: ");
+            string path = ReadLine();
 
-            WriteLine("Enter path where to save: ");
-            //string savePath = ReadLine();
-            string savePath = @"C:\tmp\Sample8.txt";
+            WriteLine("Enter path where to save: (without file extension)");
+            string savePath = ReadLine();
+            savePath = savePath + ".html";
 
-            var fs = new FileStream(path, FileMode.Open);
-            var read = new ReadInputFile(fs);
+            try
+            {
+                if(savePath.Contains(".txt"))
+                {
+                    throw new InvalidOperationException();
+                }
 
-            var modify = new ConvertSCahrs(read);
-            
-            var save = new CreateHTML(modify, new FileStream(savePath, FileMode.Create));
-            save.SaveFile();
+                var fs = new FileStream(path, FileMode.Open);
+                var read = new ReadInputFile(fs);
 
+                var modify = new ConvertSCahrs(read);
 
+                try
+                {
+                    var save = new CreateHTML(modify, new FileStream(savePath, FileMode.Create));
+                    save.SaveFile();
 
-
+                    System.Diagnostics.Process.Start(savePath);
+                }
+                catch
+                {
+                    WriteLine("Error! You do not have permission to write in this location.");
+                }
+            }
+            catch(FileNotFoundException)
+            {
+                WriteLine("Error! File was not found.");
+            }
+            catch(InvalidOperationException)
+            {
+                WriteLine("Incorrect file name. Please try without giving extension.");
+            }
+                                 
 
             WriteLine("Press any key to exit...");
             ReadKey();

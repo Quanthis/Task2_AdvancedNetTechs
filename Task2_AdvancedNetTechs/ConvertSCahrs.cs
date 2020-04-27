@@ -33,6 +33,13 @@ namespace Task2_AdvancedNetTechs
             return await Task.Run(() =>
             {                
                 modifiedText = AssignText().Result;
+
+                if(modifiedText.Length == 0)
+                {
+                    Console.WriteLine("File was empty!");
+                    return new StringBuilder("Error! File was empty.");
+                }
+
                 modifiedText = HelperMethods.ParagraphReplace(modifiedText).Result;
                 modifiedText = HelperMethods.Adres_Replace(modifiedText).Result;
                 modifiedText = HelperMethods.QReplace(modifiedText).Result;
@@ -42,7 +49,23 @@ namespace Task2_AdvancedNetTechs
                 modifiedText = HelperMethods._Replace(modifiedText).Result;
                 modifiedText = HelperMethods.Replace3(modifiedText).Result;
                 modifiedText = HelperMethods.LineReplace(modifiedText).Result;
-                //modifiedText = HelperMethods.ParagraphReplace(modifiedText).Result;
+                modifiedText = AddHTMLElemets().Result;
+
+
+                return modifiedText;
+            });
+        }
+
+        private async Task<StringBuilder> AddHTMLElemets()
+        {
+            return await Task.Run(() =>
+            {
+                string toInsert = "<!DOCTYPE html>" + "\n<html>\n<head>\n<meta charset=utf-8/>" + "<title>Converted HTML document</title>" +
+                    "\n</head>\n<body>\n";
+                modifiedText.Insert(0, toInsert);
+
+                string toInsertAtEnd = "\n</body>\n</html>";
+                modifiedText.Insert(modifiedText.Length, toInsertAtEnd);
 
                 return modifiedText;
             });
