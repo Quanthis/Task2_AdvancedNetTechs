@@ -90,6 +90,8 @@ namespace Task2_AdvancedNetTechs
         {
             return await Task.Run(() =>
             {
+                System.Diagnostics.Debug.WriteLine("Inside method of HelperMethods (line 93): " + textToModify);
+
                 string toModify = textToModify.ToString();
 
                 for (int i = 0; i < toModify.Length; ++i)
@@ -450,6 +452,8 @@ namespace Task2_AdvancedNetTechs
         {
             return await Task.Run(() =>
             {
+                System.Diagnostics.Debug.WriteLine("From ParagraphReplace: " + textToModify);
+
                 ParagraphReplaceResult = textToModify;
 
                 string text = textToModify.ToString();

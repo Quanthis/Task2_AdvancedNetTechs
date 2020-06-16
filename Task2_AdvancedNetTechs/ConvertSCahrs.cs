@@ -7,13 +7,25 @@ namespace Task2_AdvancedNetTechs
 {
     public class ConvertSCahrs
     {
-        private StringBuilder textToModify;
+        private StringBuilder textToModify = new StringBuilder("");
         private StringBuilder modifiedText = new StringBuilder("");
         private ReadInputFile file;
 
         public ConvertSCahrs(ReadInputFile inputFile)
         {
             file = inputFile;
+        }
+
+        public ConvertSCahrs(StringBuilder textToModify)
+        {
+            this.textToModify = textToModify;
+            textToModify.Append(" ");
+        }
+
+        public ConvertSCahrs(string textToModify)
+        {
+            this.textToModify = new StringBuilder(textToModify);
+            this.textToModify.Append(" ");
         }
 
         private async Task<StringBuilder> AssignText()
@@ -53,6 +65,31 @@ namespace Task2_AdvancedNetTechs
 
 
                 return modifiedText;
+            });
+        }
+
+        public async Task<string> ModifyText(bool withHTMLBase, bool AsString)
+        {
+            return await Task.Run(() =>
+            {
+                modifiedText = textToModify;
+
+                if(modifiedText.Length == 0)
+                {
+                    return "Error";
+                }
+
+                modifiedText = HelperMethods.ParagraphReplace(modifiedText).Result;
+                modifiedText = HelperMethods.Adres_Replace(modifiedText).Result;
+                modifiedText = HelperMethods.QReplace(modifiedText).Result;
+                modifiedText = HelperMethods.StrongReplace(modifiedText).Result;
+                modifiedText = HelperMethods.EMReplace(modifiedText).Result;
+                modifiedText = HelperMethods.Replace_(modifiedText).Result;
+                modifiedText = HelperMethods._Replace(modifiedText).Result;
+                modifiedText = HelperMethods.Replace3(modifiedText).Result;
+                modifiedText = HelperMethods.LineReplace(modifiedText).Result;
+
+                return modifiedText.ToString();
             });
         }
 
